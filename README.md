@@ -1,4 +1,4 @@
-# ☁️ Projeto: criando uma arquitetura resiliente / Semana de Arquitetura AWS]
+# ☁️ Projeto: criando uma arquitetura resiliente AWS
 
 Documentação da arquitetura e dos laboratórios práticos realizados com foco na certificação **AWS Certified Solutions Architect – Associate**.
 
