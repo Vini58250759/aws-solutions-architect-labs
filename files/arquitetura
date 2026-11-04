@@ -1,1 +1,35 @@
+# ☁️ Laboratório AWS: Arquitetura Multicamadas Escalável e Resiliente
 
+Documentação oficial do laboratório prático da **Semana de Arquitetura AWS**, demonstrando a evolução de uma infraestrutura de rede básica para uma aplicação web distribuída, desacoplada e de alta disponibilidade.
+
+---
+
+## 📊 Comparativo de Arquitetura (Antes vs. Depois)
+
+Abaixo está a representação visual da evolução da infraestrutura durante o laboratório:
+
+---
+
+## 🏗️ Descrição da Solução Final (Após o Laboratório)
+
+O ambiente final implementa uma arquitetura em camadas altamente resiliente distribuída em **Múltiplas Zonas de Disponibilidade (Multi-AZ)**:
+
+* **Camada de Rede (VPC):**
+  * **Internet Gateway (IGW):** Permite a comunicação da VPC com a internet pública.
+  * **Sub-redes Públicas (1 e 2):** Abrangem diferentes AZs, contendo os **NAT Gateways** para permitir saída segura de internet para recursos privados, além de hospedar o **Application Load Balancer (ALB)**.
+  * **Sub-redes Privadas (1 a 4):** Isoladas da internet direta para maior segurança, divididas entre as camadas de aplicação frontend, backend e mensageria.
+
+* **Camada de Computação e Balanceamento:**
+  * **Application Load Balancer (ALB):** Recebe o tráfego externo dos usuários e distribui de forma balanceada entre as instâncias EC2 de Frontend nas diferentes AZs.
+  * **Instâncias EC2 (Frontend & Backend):** Camadas desacopladas onde o Frontend interage com o usuário e o Backend processa as regras de negócio de forma segura nas sub-redes privadas.
+
+* **Camada de Mensageria e Banco de Dados:**
+  * **Amazon SQS (Simple Queue Service):** Atua como fila de mensagens desacoplando a comunicação entre o Frontend e o Backend, garantindo resiliência caso ocorra pico de requisições.
+  * **Amazon DynamoDB:** Banco de dados NoSQL totalmente gerenciado para armazenamento persistente dos dados de forma rápida e escalável.
+
+---
+
+## 💡 Conceitos e Boas Práticas Aplicadas (AWS Well-Architected)
+* **Segurança:** Isolamento estrito de componentes críticos em sub-redes privadas e uso de NAT Gateway.
+* **Confiabilidade / Alta Disponibilidade:** Replicação de recursos essenciais (Subnets, NAT Gateways, EC2) em duas Zonas de Disponibilidade distintas (AZ-A e AZ-B), eliminando pontos únicos de falha (SPOF).
+* **Desacoplamento:** Utilização do SQS para garantir que falhas temporárias no backend não derrubem o fluxo de requisições do frontend.
