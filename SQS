@@ -1,1 +1,19 @@
+🛡️ Arquitetura Assíncrona e Resiliência com Amazon SQS
+Um dos princípios fundamentais no desenvolvimento de software moderno é aceitar que tudo falha o tempo todo. Para construir sistemas resilientes, precisamos garantir que a falha em um componente não gere um efeito dominó, derrubando toda a aplicação.
 
+💡 O Problema: Acoplamento e Efeito Dominó
+Quando partes da aplicação dependem diretamente umas das outras para concluir um processamento em tempo real (comunicação síncrona), qualquer instabilidade ou queda em um serviço filho pode sobrecarregar e derrubar os serviços pai, gerando uma reação em cadeia.
+
+✉️ A Solução: Mensageria
+Para evitar esse acoplamento direto, adotamos o conceito de Mensageria Assíncrona. Com ela, uma parte do software envia mensagens/solicitações para outra parte sem a necessidade de esperar uma resposta imediata para continuar executando suas tarefas.
+
+🚀 Nosso Meio-de-Campo: AWS SQS
+Para realizar esse desacoplamento entre o Frontend e o Backend:
+
+Utilizamos o Amazon SQS (Simple Queue Service) como um intermediário (buffer/mensageria).
+
+O Frontend posta as requisições na fila do SQS sem ficar bloqueado aguardando o processamento pesado.
+
+O Backend consome e processa as mensagens no seu próprio ritmo, garantindo tolerância a picos de tráfego (rate-limiting natural) e isolamento de falhas.
+
+Dessa forma, mesmo que o Backend passe por uma instabilidade temporária, os dados enviados pelo usuário não são perdidos e a interface permanece responsiva.
